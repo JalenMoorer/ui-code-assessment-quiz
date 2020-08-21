@@ -1,0 +1,48 @@
+import React, {useState} from 'react';
+
+const mockData = {
+    category: "Entertainment: Video Games",
+    type: "multiple",
+    difficulty: "easy",
+    question: "Which game did &quot;Sonic The Hedgehog&quot; make his first appearance in?",
+    correct_answer: "Rad Mobile",
+    incorrect_answers: [
+    "Sonic The Hedgehog",
+    "Super Mario 64",
+    "Mega Man"
+    ]
+};
+
+function Multiple(props) {
+    const [radio, setRadio] = useState(mockData.incorrect_answers[0]);
+    const combinedAnswerList = [...mockData.incorrect_answers, mockData.correct_answer];
+    const radioList = combinedAnswerList.map((item, i ) => {
+    //console.log(item, i);
+        return (
+            <div key={i} className="radio">
+                <label>
+                <input type="radio" value={item} checked={radio === item} onChange={() => setRadio(item)}  />
+                {item}
+                </label>
+          </div>
+        )
+     });
+
+    const handleSubmit = e => {
+        e.preventDefault();
+        console.log(radio)
+        props.onAnswer(radio);
+    }
+
+    return (
+        <div>
+         <form onSubmit={handleSubmit}>
+            <h1>{mockData.question}</h1>
+            {radioList}
+            <input type="submit" value="Next"></input>
+         </form>
+        </div>
+    ) 
+}
+
+export default Multiple;
