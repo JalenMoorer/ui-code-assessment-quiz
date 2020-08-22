@@ -3,6 +3,12 @@ import { fetchQuestions } from './api';
 import Multiple from '../components/Multiple';
 import Boolean from '../components/Boolean';
 import Text from '../components/Text';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import Button from '@material-ui/core/Button';
 
 function Loading() {
     return <div>Loading...</div>
@@ -18,22 +24,24 @@ function SelectQuizType(props) {
     }
 
     return (
-        <div>
-            <form onSubmit={handleSubmit}>
-                <div className="select">
-                        <label>
-                            <select value={select} onChange={(e) => onSelect(e.target.value) }>
-                                <option value="easy">Easy</option>
-                                <option value="medium">Medium</option>
-                                <option value="hard">Hard</option>
-                            </select>
-                        </label>
-                </div>
-                <div className="submit">
-                    <input type="submit" value="Begin" />
-                </div>
-            </form>
-        </div>
+        <FormControl>
+            <InputLabel id="demo-simple-select-helper-label">Age</InputLabel>
+            <Select
+            labelId="demo-simple-select-helper-label"
+            id="demo-simple-select-helper"
+            value={select}
+            onChange={e => onSelect(e.target.value)}
+            >
+            <MenuItem value={"easy"}>Easy</MenuItem>
+            <MenuItem value={"medium"}>Medium</MenuItem>
+            <MenuItem value={"hard"}>Hard</MenuItem>
+            </Select>
+            <FormHelperText>Please select a difficulty and then begin the quiz</FormHelperText>
+            <Button variant="contained" color="primary" onClick={handleSubmit}>
+                begin
+            </Button>
+      </FormControl>
+      
     )
 }
 

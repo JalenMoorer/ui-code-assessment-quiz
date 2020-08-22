@@ -1,17 +1,10 @@
 import React, {useState, useEffect} from 'react';
-
-const mockData = {
-    category: "Entertainment: Video Games",
-    type: "multiple",
-    difficulty: "easy",
-    question: "Which game did &quot;Sonic The Hedgehog&quot; make his first appearance in?",
-    correct_answer: "Rad Mobile",
-    incorrect_answers: [
-    "Sonic The Hedgehog",
-    "Super Mario 64",
-    "Mega Man"
-    ]
-};
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
+import Button from '@material-ui/core/Button';
 
 function Multiple(props) {
     const { randomizedQuestion } = props.questionData;
@@ -24,34 +17,28 @@ function Multiple(props) {
 
     const combinedAnswerList = [...randomizedQuestion.incorrect_answers, randomizedQuestion.correct_answer];
     const radioList = combinedAnswerList.map((item, i ) => {
-    //console.log(item, i);
-        return (
-            <div key={i} className="radio">
-                <label>
-                <input type="radio" value={item} checked={radio === item} onChange={() => setRadio(item)}  />
-                {item}
-                </label>
-          </div>
-        )
+        return <FormControlLabel key={i} value={item} control={<Radio />} label={item} />
      });
 
     const handleSubmit = e => {
-        console.log(radio);
-        
         const isCorrect = radio === randomizedQuestion.correct_answer;
 
         props.onAnswer(props.questionData.id, isCorrect);
         e.preventDefault();
     }
- 
+
+    const handleChange = e => setRadio(e.target.value);
+
     return (
-        <div>
-         <form onSubmit={handleSubmit}>
-            <h1>{randomizedQuestion.question}</h1>
+        <FormControl component="fieldset">
+        <FormLabel component="legend">{randomizedQuestion.question}</FormLabel>
+        <RadioGroup aria-label="Multiple Choice" name="multiple-choice" value={radio} onChange={handleChange}>
             {radioList}
-            <input type="submit" value="Next"></input>
-         </form>
-        </div>
+        </RadioGroup>
+        <Button variant="contained" color="primary" onClick={handleSubmit}>
+            Next
+        </Button>
+      </FormControl>
     )
 }
 
