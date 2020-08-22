@@ -45,7 +45,13 @@ function Summary(props) {
 
     return  (
         <div>
-            <h1>This should show after the quiz ended</h1>
+            <h1>Summary</h1>
+            <ul>
+                <li>Correct: {props.correct}</li>
+                <li>Wrong: {props.incorrect}</li>
+                <li>Questions answered: {props.quizLimit}</li>
+                <li>Final Score: {Math.floor(props.correct / props.quizLimit * 100)}%</li>
+            </ul>
             <button type="button" onClick={onSubmit}>Restart Quiz</button>
         </div>
     )
@@ -62,7 +68,7 @@ class QuizContainer extends Component {
             quizStart: false,
             showSummary: false,
             currentQuestionList: [],
-            questionLimit: 0,
+            quizLimit: 0,
         }
         this.handleAnswer = this.handleAnswer.bind(this);
         this.handeRestartQuiz = this.handeRestartQuiz.bind(this);
@@ -136,7 +142,9 @@ class QuizContainer extends Component {
         }
 
         if (!this.state.quizStart) {
-            return this.state.showSummary ? <Summary onRestartQuiz={this.handeRestartQuiz} /> : <SelectQuizType startQuiz={this.startQuiz} />
+            return this.state.showSummary 
+            ? <Summary onRestartQuiz={this.handeRestartQuiz} correct={this.state.correct} incorrect={this.state.incorrect} quizLimit={this.state.quizLimit} /> 
+            : <SelectQuizType startQuiz={this.startQuiz} />
         }
 
         const questionData = this.getQuestions();
