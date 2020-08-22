@@ -9,17 +9,22 @@ const mockData = {
 }
 
 function Text(props) {
+    const { randomizedQuestion } = props.questionData;
     const [text, setText] = useState('');
 
-     const handleSubmit = e => {
+    const handleSubmit = e => {
         e.preventDefault();
-        console.log(text)
+        console.log(text);
+        
+        const isCorrect = text.toLowerCase() === randomizedQuestion.correct_answer;
+
+        props.onAnswer(props.questionData.id, isCorrect);
     }
 
     return (
         <div>
          <form onSubmit={handleSubmit}>
-            <h1>{mockData.question}</h1>
+            <h1>{randomizedQuestion.question}</h1>
             <input type="text" onChange={(e) => setText(e.target.value)} value={text} />
             <input type="submit" value="Next" />
          </form>

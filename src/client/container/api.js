@@ -10,7 +10,7 @@
 //   }
 
 
-  export async function getQuestions() {
+  export async function fetchQuestions() {
     try {
         const response = await fetch('http://localhost:4000/api/questions');
         if (!response.ok) {

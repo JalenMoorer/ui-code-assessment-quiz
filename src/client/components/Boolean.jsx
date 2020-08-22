@@ -11,12 +11,17 @@ const mockData = {
     ]
 }
 
+function stringToBoolean(string) {
+    return string === "True" ? true : false;
+}
+
 function Multiple(props) {
+    const { randomizedQuestion } = props.questionData;
     const [boolean, setBoolean] = useState(true);
-    const combinedAnswerList = [...mockData.incorrect_answers, mockData.correct_answer];
+    const combinedAnswerList = [randomizedQuestion.correct_answer, ...randomizedQuestion.incorrect_answers].sort((a, b) =>  b - a);
     const radioList = combinedAnswerList.map((item, i ) => {
-        const itemToBoolean = item === "True" ? true : false;
-        //console.log(item, i, boolean, itemToBoolean);
+        const itemToBoolean = stringToBoolean(item);
+        console.log(item, i, boolean, itemToBoolean);
         return (
             <div key={i} className="radio">
                 <label>
@@ -29,24 +34,22 @@ function Multiple(props) {
 
      const handleSubmit = e => {
         e.preventDefault();
-        console.log(boolean)
+        console.log(boolean, randomizedQuestion.correct_answer);
+        
+        const isCorrect = boolean === stringToBoolean(randomizedQuestion.correct_answer);
+
+        props.onAnswer(props.questionData.id, isCorrect);
     }
 
     return (
         <div>
          <form onSubmit={handleSubmit}>
-            <h1>{mockData.question}</h1>
+            <h1>{randomizedQuestion.question}</h1>
             {radioList}
             <input type="submit" value="Next" />
          </form>
         </div>
     ) 
-
-//     <form onSubmit={this.handleSubmit}>
-//         <label>{mockData.question}</label><br />
-//         <input type="text" value={this.state.value} onChange={this.handleChange} />
-//    0     <input type="submit" value="Submit" />
-//   </form>
 }
 
 export default Multiple;
