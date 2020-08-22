@@ -19,11 +19,13 @@ function Text(props) {
 
     return (
         <FormControl component="fieldset">
-           <FormLabel component="legend">{randomizedQuestion.question}</FormLabel>
+           <FormLabel className="questionLabel" component="legend">{randomizedQuestion.question}</FormLabel>
             <TextField id="outlined-basic" label="Outlined" variant="outlined"  onChange={(e) => setText(e.target.value)} value={text} />
-            <Button variant="contained" color="primary" onClick={handleSubmit}>
-                Next
-            </Button>
+            <div className="button-group">
+                <Button variant="contained" color="primary" onClick={handleSubmit}>
+                    Next
+                </Button>
+            </div>
         </FormControl>
     ) 
 }

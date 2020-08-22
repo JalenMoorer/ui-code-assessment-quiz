@@ -28,13 +28,15 @@ function Boolean(props) {
 
     return (
         <FormControl component="fieldset">
-        <FormLabel component="legend">{randomizedQuestion.question}</FormLabel>
+        <FormLabel className="questionLabel" component="legend">{randomizedQuestion.question}</FormLabel>
         <RadioGroup aria-label="True or False" name="True or False" value={boolean} onChange={handleChange}>
             {radioList}
         </RadioGroup>
-        <Button variant="contained" color="primary" onClick={handleSubmit}>
-            Next
-        </Button>
+        <div className="button-group">
+            <Button variant="contained" color="primary" onClick={handleSubmit}>
+                Next
+            </Button>
+        </div>
       </FormControl>
     )
 }
