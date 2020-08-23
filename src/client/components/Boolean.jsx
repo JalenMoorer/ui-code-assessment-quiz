@@ -9,8 +9,9 @@ import { entitiesRegex, specialCharsMap } from '../util/replaceEntities';
 
 function Boolean(props) {
     const { randomizedQuestion } = props.questionData;
-    const [boolean, setBoolean] = useState(randomizedQuestion.incorrect_answers[0]);
     const combinedAnswerList = [randomizedQuestion.correct_answer, ...randomizedQuestion.incorrect_answers].sort((a, b) =>  b - a);
+    const [boolean, setBoolean] = useState(combinedAnswerList[0]);
+
     const radioList = combinedAnswerList.map((item, i ) => {
         return <FormControlLabel key={i} value={item} control={<Radio />} label={item} />
      });
