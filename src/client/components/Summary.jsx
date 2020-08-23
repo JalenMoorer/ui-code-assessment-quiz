@@ -8,10 +8,10 @@ function Summary(props) {
         <div>
             <h1>Summary</h1>
             <ul className="summaryList">
-                <li>Correct: {correct}</li>
-                <li>Wrong: {incorrect}</li>
-                <li>Questions answered: {quizLimit}</li>
-                <li>Final Score: {Math.floor(correct / quizLimit * 100)}%</li>
+                <li>Correct: <b>{correct}</b></li>
+                <li>Wrong: <b>{incorrect}</b></li>
+                <li>Questions answered: <b>{quizLimit}</b></li>
+                <li>Final Score: <b>{Math.floor(correct / quizLimit * 100)}%</b></li>
             </ul>
             <Button variant="contained" color="primary" onClick={onRestartQuiz}>
                 Restart Quiz
