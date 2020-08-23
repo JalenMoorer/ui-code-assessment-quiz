@@ -24,9 +24,9 @@ function SelectQuizType(props) {
                 value={select}
                 onChange={e => onSelect(e.target.value)}
                 >
-                <MenuItem value={"easy"}>Easy</MenuItem>
-                <MenuItem value={"medium"}>Medium</MenuItem>
-                <MenuItem value={"hard"}>Hard</MenuItem>
+                    <MenuItem value="easy">Easy</MenuItem>
+                    <MenuItem value="medium">Medium</MenuItem>
+                    <MenuItem value="hard">Hard</MenuItem>
                 </Select>
                 <FormHelperText>Please select a difficulty and then begin the quiz</FormHelperText>
                 <div className="button-group">
