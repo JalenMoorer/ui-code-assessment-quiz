@@ -5,6 +5,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import Button from '@material-ui/core/Button';
+import { entitiesRegex, specialCharsMap } from '../util/replaceEntities';
 
 function Multiple(props) {
     const { randomizedQuestion } = props.questionData;
@@ -31,7 +32,7 @@ function Multiple(props) {
 
     return (
         <FormControl component="fieldset">
-        <FormLabel className="questionLabel" component="legend">{randomizedQuestion.question}</FormLabel>
+        <FormLabel className="questionLabel" component="legend">{randomizedQuestion.question.replace(entitiesRegex, match => specialCharsMap.get(match))}</FormLabel>
         <RadioGroup aria-label="Multiple Choice" name="multiple-choice" value={radio} onChange={handleChange}>
             {radioList}
         </RadioGroup>

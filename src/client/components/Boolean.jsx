@@ -5,10 +5,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import Button from '@material-ui/core/Button';
-
-function stringToBoolean(string) {
-    return string === "True" ? true : false;
-}
+import { entitiesRegex, specialCharsMap } from '../util/replaceEntities';
 
 function Boolean(props) {
     const { randomizedQuestion } = props.questionData;
@@ -28,7 +25,7 @@ function Boolean(props) {
 
     return (
         <FormControl component="fieldset">
-        <FormLabel className="questionLabel" component="legend">{randomizedQuestion.question}</FormLabel>
+        <FormLabel className="questionLabel" component="legend">{randomizedQuestion.question.replace(entitiesRegex, match => specialCharsMap.get(match))}</FormLabel>
         <RadioGroup aria-label="True or False" name="True or False" value={boolean} onChange={handleChange}>
             {radioList}
         </RadioGroup>
