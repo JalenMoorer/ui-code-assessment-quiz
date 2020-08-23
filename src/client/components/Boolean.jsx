@@ -10,7 +10,15 @@ import { entitiesRegex, specialCharsMap } from '../util/replaceEntities';
 function Boolean(props) {
     const { onAnswer } = props;
     const { randomizedQuestion, id } = props.questionData;
-    const combinedAnswerList = [randomizedQuestion.correct_answer, ...randomizedQuestion.incorrect_answers].sort((a, b) =>  b - a);
+    const combinedAnswerList = [randomizedQuestion.correct_answer, ...randomizedQuestion.incorrect_answers].sort((a, b) => {
+        if (a > b) {
+            return -1;
+        }
+        if (b > a) {
+            return 1;
+        }
+        return 0;
+    });
     const [boolean, setBoolean] = useState(combinedAnswerList[0]);
 
     const radioList = combinedAnswerList.map((item, i ) => {
