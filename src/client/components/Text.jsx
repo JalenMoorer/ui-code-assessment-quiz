@@ -13,7 +13,7 @@ function Text(props) {
         e.preventDefault();
         console.log(text);
         
-        const isCorrect = text.toLowerCase() === randomizedQuestion.correct_answer;
+        const isCorrect = text.toLowerCase() === randomizedQuestion.correct_answer.toLowerCase();
 
         props.onAnswer(props.questionData.id, isCorrect);
     }

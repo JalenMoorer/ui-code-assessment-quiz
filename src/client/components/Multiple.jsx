@@ -18,7 +18,7 @@ function Multiple(props) {
 
     const combinedAnswerList = [...randomizedQuestion.incorrect_answers, randomizedQuestion.correct_answer];
     const radioList = combinedAnswerList.map((item, i ) => {
-        return <FormControlLabel key={i} value={item} control={<Radio />} label={item} />
+        return <FormControlLabel key={i} value={item} control={<Radio />} label={item.replace(entitiesRegex, match => specialCharsMap.get(match))} />
      });
 
     const handleSubmit = e => {
