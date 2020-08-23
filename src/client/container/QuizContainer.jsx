@@ -1,77 +1,13 @@
-import React, { Component, useState } from 'react';
-import { fetchQuestions } from './api';
+import React, { Component } from 'react';
+import { fetchQuestions } from '../util/api';
+import Loading from '../components/Loading';
+import SelectQuizType from '../components/SelectQuizType';
+import Summary from '../components/Summary';
 import Multiple from '../components/Multiple';
 import Boolean from '../components/Boolean';
 import Text from '../components/Text';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import Button from '@material-ui/core/Button';
+
 import '../index.css';
-
-function Loading() {
-    return <div>Loading...</div>
-}
-
-function SelectQuizType(props) {
-    const [select, onSelect] = useState("easy");
-
-    const handleSubmit = e => {
-        e.preventDefault();
-        console.log(select);
-        props.startQuiz(select);
-    }
-
-    return (
-        <div className="form-container">
-            <FormControl>
-                <InputLabel className="questionLabel" id="demo-simple-select-helper-label">Age</InputLabel>
-                <Select
-                labelId="demo-simple-select-helper-label"
-                id="demo-simple-select-helper"
-                value={select}
-                onChange={e => onSelect(e.target.value)}
-                >
-                <MenuItem value={"easy"}>Easy</MenuItem>
-                <MenuItem value={"medium"}>Medium</MenuItem>
-                <MenuItem value={"hard"}>Hard</MenuItem>
-                </Select>
-                <FormHelperText>Please select a difficulty and then begin the quiz</FormHelperText>
-                <div className="button-group">
-                    <Button variant="contained" color="primary" onClick={handleSubmit}>
-                        begin
-                    </Button>
-                </div>
-            </FormControl>
-        </div>
-
-      
-    )
-}
-
-function Summary(props) {
-
-    function handleSubmit() {
-        props.onRestartQuiz();
-    }
-
-    return  (
-        <div>
-            <h1>Summary</h1>
-            <ul className="summaryList">
-                <li>Correct: {props.correct}</li>
-                <li>Wrong: {props.incorrect}</li>
-                <li>Questions answered: {props.quizLimit}</li>
-                <li>Final Score: {Math.floor(props.correct / props.quizLimit * 100)}%</li>
-            </ul>
-            <Button variant="contained" color="primary" onClick={handleSubmit}>
-                Restart Quiz
-            </Button>
-        </div>
-    )
-}
 
 class QuizContainer extends Component {
     constructor(props){
@@ -92,26 +28,20 @@ class QuizContainer extends Component {
     }
 
     async componentDidMount() {
-        console.log('Before Fetching Data');
         const data = await fetchQuestions();
-        console.log('Dont render until api loads');
-        console.log(data);
         this.setState({ data: data.results, loading: false })
     }
 
     handleAnswer(id, isCorrect) {
         const { quizLimit, correct, incorrect, currentQuestionList } = this.state;
-        console.log(id, isCorrect);
-        
         const counterKey = isCorrect ? 'correct' : 'incorrect';
-        console.log('State',this.state.currentQuestionList[id]);
-        if (correct + incorrect === quizLimit) {
-            console.log('Quiz over');
+        if (correct + incorrect === quizLimit)
             this.setState({ quizStart: false, showSummary: true});
-        }
-        else {
-            this.setState({ currentQuestionList: [...currentQuestionList.slice(0,id), ...currentQuestionList.slice(id+1)], [counterKey]: this.state[counterKey] + 1});
-        }
+        else
+            this.setState({ 
+                currentQuestionList: [...currentQuestionList.slice(0,id), ...currentQuestionList.slice(id+1)], 
+                [counterKey]: this.state[counterKey] + 1
+            });
     }
 
     handeRestartQuiz() {
@@ -125,19 +55,13 @@ class QuizContainer extends Component {
         const randomizedQuestion = currentQuestionList[id];
         const type = currentQuestionList[id].type;
 
-        console.log(randomizedQuestion);
-
         return { id, type, randomizedQuestion}
     }
 
     startQuiz(difficulty) {
         const { data } = this.state;
-        console.log(data);
         const filteredQuestions = data.filter(question => question.difficulty === difficulty);
-        console.log(filteredQuestions);
-
         const currentQuestionList = filteredQuestions;
-
         this.setState({ currentQuestionList, quizStart: true, quizLimit: currentQuestionList.length - 1 });
     }
 
@@ -149,6 +73,8 @@ class QuizContainer extends Component {
                 return <Boolean questionData={questionData} onAnswer={this.handleAnswer} />
             case 'text':
                 return <Text questionData={questionData} onAnswer={this.handleAnswer} />
+            default:
+                return;
         }
     }
 
@@ -159,13 +85,18 @@ class QuizContainer extends Component {
 
         if (!this.state.quizStart) {
             return this.state.showSummary 
-            ? <Summary onRestartQuiz={this.handeRestartQuiz} correct={this.state.correct} incorrect={this.state.incorrect} quizLimit={this.state.quizLimit} /> 
+            ? (
+                <Summary 
+                    onRestartQuiz={this.handeRestartQuiz} 
+                    correct={this.state.correct} 
+                    incorrect={this.state.incorrect} 
+                    quizLimit={this.state.quizLimit} 
+                /> 
+            )
             : <SelectQuizType startQuiz={this.startQuiz} />
         }
-
         const questionData = this.getQuestions();
-        return <div className="form-container">{this.getQuestionComponent(questionData)}</div>
-        
+        return <div className="form-container">{this.getQuestionComponent(questionData)}</div>  
     }
 }
 

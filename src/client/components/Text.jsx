@@ -6,21 +6,21 @@ import FormLabel from '@material-ui/core/FormLabel';
 import { entitiesRegex, specialCharsMap } from '../util/replaceEntities';
 
 function Text(props) {
-    const { randomizedQuestion } = props.questionData;
+    const {onAnswer} = props;
+    const { randomizedQuestion, id } = props.questionData;
     const [text, setText] = useState('');
 
     const handleSubmit = e => {
         e.preventDefault();
-        console.log(text);
-        
         const isCorrect = text.toLowerCase() === randomizedQuestion.correct_answer.toLowerCase();
-
-        props.onAnswer(props.questionData.id, isCorrect);
+        onAnswer(id, isCorrect);
     }
 
     return (
         <FormControl component="fieldset">
-           <FormLabel className="questionLabel" component="legend">{randomizedQuestion.question.replace(entitiesRegex, match => specialCharsMap.get(match))}</FormLabel>
+           <FormLabel className="questionLabel" component="legend">
+                {randomizedQuestion.question.replace(entitiesRegex, match => specialCharsMap.get(match))}
+            </FormLabel>
             <TextField id="outlined-basic" label="Outlined" variant="outlined"  onChange={(e) => setText(e.target.value)} value={text} />
             <div className="button-group">
                 <Button variant="contained" color="primary" onClick={handleSubmit}>

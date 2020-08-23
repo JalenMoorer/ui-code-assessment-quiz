@@ -8,7 +8,8 @@ import Button from '@material-ui/core/Button';
 import { entitiesRegex, specialCharsMap } from '../util/replaceEntities';
 
 function Boolean(props) {
-    const { randomizedQuestion } = props.questionData;
+    const { onAnswer } = props;
+    const { randomizedQuestion, id } = props.questionData;
     const combinedAnswerList = [randomizedQuestion.correct_answer, ...randomizedQuestion.incorrect_answers].sort((a, b) =>  b - a);
     const [boolean, setBoolean] = useState(combinedAnswerList[0]);
 
@@ -19,14 +20,16 @@ function Boolean(props) {
      const handleSubmit = e => {
         e.preventDefault();        
         const isCorrect = boolean === randomizedQuestion.correct_answer;
-        props.onAnswer(props.questionData.id, isCorrect);
+        onAnswer(id, isCorrect);
     }
 
     const handleChange = e => setBoolean(e.target.value);
 
     return (
         <FormControl component="fieldset">
-        <FormLabel className="questionLabel" component="legend">{randomizedQuestion.question.replace(entitiesRegex, match => specialCharsMap.get(match))}</FormLabel>
+        <FormLabel className="questionLabel" component="legend">
+            {randomizedQuestion.question.replace(entitiesRegex, match => specialCharsMap.get(match))}
+        </FormLabel>
         <RadioGroup aria-label="True or False" name="True or False" value={boolean} onChange={handleChange}>
             {radioList}
         </RadioGroup>

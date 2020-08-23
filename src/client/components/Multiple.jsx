@@ -8,13 +8,14 @@ import Button from '@material-ui/core/Button';
 import { entitiesRegex, specialCharsMap } from '../util/replaceEntities';
 
 function Multiple(props) {
-    const { randomizedQuestion } = props.questionData;
+    const { onAnswer } = props;
+    const { randomizedQuestion, id } = props.questionData;
     const defaultField = randomizedQuestion.incorrect_answers[0];
     const [radio, setRadio] = useState(defaultField);
 
     useEffect(() => {
         setRadio(defaultField);
-    }, [randomizedQuestion])
+    }, [randomizedQuestion, defaultField])
 
     const combinedAnswerList = [...randomizedQuestion.incorrect_answers, randomizedQuestion.correct_answer];
     const radioList = combinedAnswerList.map((item, i ) => {
@@ -24,7 +25,7 @@ function Multiple(props) {
     const handleSubmit = e => {
         const isCorrect = radio === randomizedQuestion.correct_answer;
 
-        props.onAnswer(props.questionData.id, isCorrect);
+        onAnswer(id, isCorrect);
         e.preventDefault();
     }
 
@@ -32,7 +33,9 @@ function Multiple(props) {
 
     return (
         <FormControl component="fieldset">
-        <FormLabel className="questionLabel" component="legend">{randomizedQuestion.question.replace(entitiesRegex, match => specialCharsMap.get(match))}</FormLabel>
+        <FormLabel className="questionLabel" component="legend">
+            {randomizedQuestion.question.replace(entitiesRegex, match => specialCharsMap.get(match))}
+        </FormLabel>
         <RadioGroup aria-label="Multiple Choice" name="multiple-choice" value={radio} onChange={handleChange}>
             {radioList}
         </RadioGroup>
